@@ -27,7 +27,7 @@ public class LabAware {
     public void calculateChip(Bitmap picture, Bitmap greenPicture) {
 
 
-        int i;
+
 
         ArrayList<ArrayList<Integer>> xyList = getRanges(picture);
         ArrayList<Integer> xList = xyList.get(0);
