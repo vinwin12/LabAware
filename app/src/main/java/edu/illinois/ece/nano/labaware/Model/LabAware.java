@@ -100,9 +100,15 @@ public class LabAware {
             int x = 831;
             int y = 451;
 
-            //int topX = 0;
+
 
             /*
+
+            //!!!!!!!!!!!!!!!!!!!!!!!DO NOT DELETE!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+              // int x = 793
+            //
+
 
             boolean whiteFound = false;
 

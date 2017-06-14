@@ -63,7 +63,7 @@ public class ViewImageActivity extends AppCompatActivity {
     static {
         if (!OpenCVLoader.initDebug()) {
             // Handle isnitialization error
-            Log.d(TAG, "Shit");
+            Log.d(TAG, "OpenCV is not loading");
         }
     }
 
@@ -83,7 +83,7 @@ public class ViewImageActivity extends AppCompatActivity {
         // Picasso.with(this).load(imageUri).into(imageView);
 
         if (imageUri == null) {
-            Log.d(TAG, " Victor is gay");
+            Log.d(TAG, "ImageUri does not exist");
         }
 
         prints(imageUri.toString());
@@ -91,8 +91,9 @@ public class ViewImageActivity extends AppCompatActivity {
 
         rangX = 900;
         rangY = 1200;
-        x = 50;
-        y = 150;
+
+        x = 150;
+        y = 200;
 
 
         Bitmap bm = decodeSampledBitmapFromResource(imageUri, rangX, rangY);
@@ -102,10 +103,9 @@ public class ViewImageActivity extends AppCompatActivity {
 
         if (bm == null) {
             prints("This doesn't work");
-            Toast.makeText(this, "Cannot make picture", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot retrieve picture", Toast.LENGTH_SHORT).show();
 
         }
-
 
         Bitmap grayImage = detectEdges(bm);
 
@@ -123,20 +123,14 @@ public class ViewImageActivity extends AppCompatActivity {
         }
 
 
-        imageView.setImageBitmap(bm);
+        imageView.setImageBitmap(grayImage);
 
 
-        Toast.makeText(this, "Found Results for you", Toast.LENGTH_LONG).show();
+       // Toast.makeText(this, "Found Results for you", Toast.LENGTH_LONG).show();
 
+        /*
 
-        //  printInt(Color.green(bm.getPixel(100,100)));
-
-        //   imageView.setImageBitmap(bm);
-
-
-        Log.d(TAG, "Image at white: ");
-        // Log.d(TAG,Integer.toString(grayImage.getPixel(421,845)));
-
+        !!!! ACTUAL CODE !!!! JUST UNCOMMENT
 
         LabAware lab = new LabAware();
         lab.calculateChip(grayImage, bm);
@@ -163,6 +157,8 @@ public class ViewImageActivity extends AppCompatActivity {
                 seven + "\n" + "Channel 8: " + eight +
                 "\n" + "Channel 9: " + nine + "\n" + "Channel 10: " + ten);
 
+        */
+
     }
 
 
@@ -172,7 +168,9 @@ public class ViewImageActivity extends AppCompatActivity {
         Utils.bitmapToMat(bitmap, rgba);
         Mat edges = new Mat(rgba.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(rgba, edges, Imgproc.COLOR_RGB2GRAY, 4);
-        Imgproc.Canny(edges, edges, x, y, 3, true);
+        Imgproc.Canny(edges, edges, x, y, 3, false);
+
+        //TODO: intially set to true, check to see if false makes sense
 
         Bitmap image = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
 
