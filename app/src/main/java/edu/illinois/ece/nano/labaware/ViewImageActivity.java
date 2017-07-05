@@ -153,7 +153,7 @@ public class ViewImageActivity extends AppCompatActivity {
 
         printInt(result);
         printInt(result2);
-        printInt(result3);
+        printInt(result);
 
 
         imageView.setImageBitmap(grayImage);
