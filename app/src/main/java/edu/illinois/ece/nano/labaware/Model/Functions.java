@@ -228,17 +228,6 @@ public class  Functions {
     }
 
 
-   /* public static void splitCoordinates(int[] list, String condition){
-
-
-        //TODO: how to split coordinates, let's see usage
-
-
-
-
-
-    }*/
-
 
 
     public static int findingSlope(ArrayList<Integer> xList, ArrayList<Integer> yList,String function){
@@ -352,7 +341,7 @@ public class  Functions {
         ArrayList<Integer> Y = new ArrayList<Integer>(1);
 
 
-        loop:
+
         for(int i: range(x1,x2,false)){
 
 
@@ -368,7 +357,7 @@ public class  Functions {
                  break;   //TODO: could be possible error, check
              }
 
-             if (pixel == Color.BLACK && (grayFlag == true)){
+             if (pixel == Color.BLACK && (grayFlag)){
                  break;
              }
 
