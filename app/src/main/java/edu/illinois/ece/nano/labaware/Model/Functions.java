@@ -185,14 +185,14 @@ public class  Functions {
 
         if (type.equals("vert")) {
             for (int i = 0; i < range(x, finalX,false).length; i++) { //TODO: fix index
-                picture.setPixel(y, i, Color.WHITE);
+                picture.setPixel(i, y, Color.WHITE);
 
             }
         }
 
         if (type.equals( "hori")){
             for (int i = 0; i < range(y,finalY,false).length;i++){
-                picture.setPixel(i,x,Color.WHITE);
+                picture.setPixel(x,i,Color.WHITE);
             }
         }
 

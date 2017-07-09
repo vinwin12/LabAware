@@ -97,7 +97,7 @@ public class ViewImageActivity extends AppCompatActivity {
         y = 200;
 
 
-        Bitmap bm = decodeSampledBitmapFromResource(imageUri, rangX, rangY);
+        Bitmap bm = decodeSampledBitmapFromResource(imageUri, 900, 1200);
         //100, 100
 
         bm = Bitmap.createScaledBitmap(bm, 900, 1200, false);
@@ -124,6 +124,9 @@ public class ViewImageActivity extends AppCompatActivity {
         }
 
 
+
+
+        /*
         int red = 0;
         int blue = 0;
         int green = 0;
@@ -153,13 +156,20 @@ public class ViewImageActivity extends AppCompatActivity {
 
         printInt(result);
         printInt(result2);
-        printInt(result);
+        printInt(result3);
+
+        */
 
 
-        imageView.setImageBitmap(grayImage);
+        LabAware lab = new LabAware();
+        lab.calculateChip(grayImage, bm);
 
 
-       // Toast.makeText(this, "Found Results for you", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Results Found!", Toast.LENGTH_SHORT).show();
+
+
+
+        imageView.setImageBitmap(bm);
 
         /*
 
@@ -167,6 +177,7 @@ public class ViewImageActivity extends AppCompatActivity {
 
         LabAware lab = new LabAware();
         lab.calculateChip(grayImage, bm);
+
 
 
         imageView.setVisibility(View.INVISIBLE);

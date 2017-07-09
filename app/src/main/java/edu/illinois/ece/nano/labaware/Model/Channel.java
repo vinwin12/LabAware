@@ -22,20 +22,6 @@ public class Channel {
 
     }
 
-
-    public void setPosition(int x, int y){
-        xposition = x;
-        yposition = y;
-    }
-
-    public int getXPosition(){
-        return xposition;
-    }
-
-    public int getYposition(){
-        return yposition;
-    }
-
     public void calculatePosition(int fromY, String operation, int xvalue){
         if (operation.equals("+")){
             yposition = fromY + ydistance;
@@ -49,23 +35,6 @@ public class Channel {
         xposition = xvalue - xdistance;
 
     }
-
-
-    public int getXdistance(){
-        return xdistance;
-
-    }
-
-    public int getYdistance(){
-        return ydistance;
-    }
-
-    public void setDistance(int x, int y){
-        xdistance = x;
-        ydistance = y;
-    }
-
-
 
     public int locationofChannels(int request){
 

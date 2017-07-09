@@ -436,135 +436,8 @@ public class SquareFunctions{
 
     public static int[] firstSquare(Bitmap picture ,int[] List){
 
-        int[] finalPoints = new int[2];
 
-        int lx1 = List[0];
-        int lx2 = List[1];
-        int ly1 = List[2];
-        int ly2 = List[3];
-          int ux1 = List[4];
-        int  ux2 = List[5];
-        int uy1 = List[6];
-        int  uy2 = List[7];
-        int  dx1 = List[8];
-        int  dx2 = List[9];
-        int   dy1 = List[10];
-        int   dy2 = List[11];
-        int  rx1 = List[12];
-        int  rx2 = List[13];
-        int   ry1 = List[14];
-        int  ry2 = List[15];
-
-
-
-        ArrayList<ArrayList<Integer>> OuterPoints = SquareFunctions.firstSquareOuterLines(picture, "both",lx1, lx2, ly1, ly2, ux1,ux2,uy1,uy2,dx1,dx2,dy1,dy2,rx1, rx2, ry1, ry2 );
-
-        ArrayList<Integer> listOfPoints = OuterPoints.get(0);
-        ArrayList<Integer> OXList = OuterPoints.get(1);
-        ArrayList<Integer> OYList = OuterPoints.get(2);
-
-
-        int Lx1 = listOfPoints.get(0);
-        int Lx2 = listOfPoints.get(1);
-        int Ly1 = listOfPoints.get(2);
-        int Ly2 = listOfPoints.get(3);
-        int Ux1 = listOfPoints.get(4);
-        int  Ux2 = listOfPoints.get(5);
-        int  Uy1 = listOfPoints.get(6);
-        int  Uy2 = listOfPoints.get(7);
-        int Dx1 = listOfPoints.get(8);
-        int  Dx2 = listOfPoints.get(9);
-        int  Dy1 = listOfPoints.get(10);
-        int  Dy2 = listOfPoints.get(11);
-        int  Rx1 = listOfPoints.get(12);
-        int  Rx2 = listOfPoints.get(13);
-        int Ry1 = listOfPoints.get(14);
-        int  Ry2 = listOfPoints.get(15);
-
-
-        ArrayList<ArrayList<Integer>> innerListPoints = SquareFunctions.firstSquareOuterLines(picture,"midpoint", Lx1, Lx2, Ly1, Ly2 + 3, Ux1,Ux2+3,Uy1,Uy2,Dx1-3,Dx2,Dy1,Dy2,Rx1, Rx2, Ry1-3, Ry2);
-        ArrayList<Integer> XList = innerListPoints.get(0);
-        ArrayList<Integer> YList = innerListPoints.get(1);
-
-        //For the outer square
-
-
-        int OVx1 = OXList.get(0);
-        int  OVy1 = OYList.get(0);
-        int OHx2 = OXList.get(1);
-        int OHy2 = OYList.get(1);
-        int OHx3 = OXList.get(2);
-        int OHy3 = OYList.get(2);
-        int OVx4 = OXList.get(3);
-        int  OVy4 = OYList.get(3);
-
-
-        int Ox1 = OVx1;
-        int Oy1 = OHy2;
-        int Ox2 = OVx1;
-        int  Oy2 = OHy3;
-        int Ox3 = OVx4;
-        int Oy3 = OHy2;
-        int Ox4 = OVx4;
-        int  Oy4 = OHy3;
-
-
-        int OXMidpoint = Math.round((Ox1+Ox2+Ox3+Ox4)/4);
-        int OYMidpoint = Math.round((Oy1+Oy2+Oy3+Oy4)/4);
-
-        Functions.colorPixel(picture,OXMidpoint,OYMidpoint,"white");
-
-
-        /////////
-
-        int Vx1 = XList.get(0);
-        int Vy1 = YList.get(0);
-        int  Hx2 = XList.get(1);
-        int Hy2 = YList.get(1);
-        int  Hx3 = XList.get(2);
-        int Hy3 = YList.get(2);
-        int Vx4 = XList.get(3);
-        int Vy4 = YList.get(3);
-
-
-
-        int    x1 = Vx1;
-        int  y1 = Hy2;
-        int x2 = Vx1;
-        int y2 = Hy3;
-        int x3 = Vx4;
-        int  y3 = Hy2;
-        int x4 = Vx4;
-        int y4 = Hy3;
-
-
-
-        int IXMidpoint = Math.round((x1+x2+x3+x4)/4);
-        int IYMidpoint = Math.round((y1+y2+y3+y4)/4);
-
-        Functions.colorPixel(picture,IXMidpoint,IYMidpoint,"white");
-
-
-
-        //For final midpoint
-
-        int x = Math.round((IXMidpoint+OXMidpoint)/2);
-       int  y = Math.round((IYMidpoint+OYMidpoint)/2);
-
-        Functions.colorPixel(picture,x,y,"green");
-
-        finalPoints[0] = x;
-        finalPoints[1] = y;
-
-
-        return finalPoints;
-
-    }
-
-
-
-    public static int[] secondSquare(Bitmap picture, int[] List){
-
+        boolean innerHasPassed = false;
 
         int[] finalPoints = new int[2];
 
@@ -612,82 +485,308 @@ public class SquareFunctions{
         int  Ry2 = listOfPoints.get(15);
 
 
-        ArrayList<ArrayList<Integer>> innerListPoints = SquareFunctions.firstSquareOuterLines(picture,"midpoint", Lx1, Lx2, Ly1, Ly2 + 3, Ux1,Ux2+3,Uy1,Uy2,Dx1-3,Dx2,Dy1,Dy2,Rx1, Rx2, Ry1-3, Ry2);
-        ArrayList<Integer> XList = innerListPoints.get(0);
-        ArrayList<Integer> YList = innerListPoints.get(1);
+        ArrayList<Integer> XList = new ArrayList<Integer>();
+        ArrayList<Integer> YList = new ArrayList<Integer>();
+
+
+        try {
+
+            ArrayList<ArrayList<Integer>> innerListPoints = SquareFunctions.firstSquareOuterLines(picture, "midpoint", Lx1, Lx2, Ly1, Ly2 + 3, Ux1, Ux2 + 3, Uy1, Uy2, Dx1 - 3, Dx2, Dy1, Dy2, Rx1, Rx2, Ry1 - 3, Ry2);
+            XList = innerListPoints.get(0);
+            YList = innerListPoints.get(1);
+            innerHasPassed = true;
+        }
+        catch (Exception e){
+            innerHasPassed = false;
+        }
+
+
 
         //For the outer square
 
+        int OXMidpoint;
+        int OYMidpoint;
 
-        int OVx1 = OXList.get(0);
-        int  OVy1 = OYList.get(0);
-        int OHx2 = OXList.get(1);
-        int OHy2 = OYList.get(1);
-        int OHx3 = OXList.get(2);
-        int OHy3 = OYList.get(2);
-        int OVx4 = OXList.get(3);
-        int  OVy4 = OYList.get(3);
+        if (!innerHasPassed) {
 
 
-        int Ox1 = OVx1;
-        int Oy1 = OHy2;
-        int Ox2 = OVx1;
-        int  Oy2 = OHy3;
-        int Ox3 = OVx4;
-        int Oy3 = OHy2;
-        int Ox4 = OVx4;
-        int  Oy4 = OHy3;
+            int OVx1 = OXList.get(0);
+            int OVy1 = OYList.get(0);
+            int OHx2 = OXList.get(1);
+            int OHy2 = OYList.get(1);
+            int OHx3 = OXList.get(2);
+            int OHy3 = OYList.get(2);
+            int OVx4 = OXList.get(3);
+            int OVy4 = OYList.get(3);
 
 
-        int OXMidpoint = Math.round((Ox1+Ox2+Ox3+Ox4)/4);
-        int OYMidpoint = Math.round((Oy1+Oy2+Oy3+Oy4)/4);
-
-        Functions.colorPixel(picture,OXMidpoint,OYMidpoint,"white");
-
-
-        /////////
-
-        int Vx1 = XList.get(0);
-        int Vy1 = YList.get(0);
-        int  Hx2 = XList.get(1);
-        int Hy2 = YList.get(1);
-        int  Hx3 = XList.get(2);
-        int Hy3 = YList.get(2);
-        int Vx4 = XList.get(3);
-        int Vy4 = YList.get(3);
+            int Ox1 = OVx1;
+            int Oy1 = OHy2;
+            int Ox2 = OVx1;
+            int Oy2 = OHy3;
+            int Ox3 = OVx4;
+            int Oy3 = OHy2;
+            int Ox4 = OVx4;
+            int Oy4 = OHy3;
 
 
+             OXMidpoint = Math.round((Ox1 + Ox2 + Ox3 + Ox4) / 4);
+             OYMidpoint = Math.round((Oy1 + Oy2 + Oy3 + Oy4) / 4);
 
-        int    x1 = Vx1;
-        int  y1 = Hy2;
-        int x2 = Vx1;
-        int y2 = Hy3;
-        int x3 = Vx4;
-        int  y3 = Hy2;
-        int x4 = Vx4;
-        int y4 = Hy3;
+            Functions.colorPixel(picture, OXMidpoint, OYMidpoint, "white");
 
+            finalPoints[0] = OXMidpoint;
+            finalPoints[1] = OYMidpoint;
 
+            return finalPoints;
 
-        int IXMidpoint = Math.round((x1+x2+x3+x4)/4);
-        int IYMidpoint = Math.round((y1+y2+y3+y4)/4);
+        }
 
-        Functions.colorPixel(picture,IXMidpoint,IYMidpoint,"white");
+        //for both the outer square and inner square coordinates
+        else {
 
-
-
-        //For final midpoint
-
-        int x = Math.round((IXMidpoint+OXMidpoint)/2);
-        int  y = Math.round((IYMidpoint+OYMidpoint)/2);
-
-        Functions.colorPixel(picture,x,y,"green");
-
-        finalPoints[0] = x;
-        finalPoints[1] = y;
+            int OVx1 = OXList.get(0);
+            int OVy1 = OYList.get(0);
+            int OHx2 = OXList.get(1);
+            int OHy2 = OYList.get(1);
+            int OHx3 = OXList.get(2);
+            int OHy3 = OYList.get(2);
+            int OVx4 = OXList.get(3);
+            int OVy4 = OYList.get(3);
 
 
-        return finalPoints;
+            int Ox1 = OVx1;
+            int Oy1 = OHy2;
+            int Ox2 = OVx1;
+            int Oy2 = OHy3;
+            int Ox3 = OVx4;
+            int Oy3 = OHy2;
+            int Ox4 = OVx4;
+            int Oy4 = OHy3;
+
+
+            OXMidpoint = Math.round((Ox1 + Ox2 + Ox3 + Ox4) / 4);
+            OYMidpoint = Math.round((Oy1 + Oy2 + Oy3 + Oy4) / 4);
+
+            Functions.colorPixel(picture, OXMidpoint, OYMidpoint, "white");
+
+            int Vx1 = XList.get(0);
+            int Vy1 = YList.get(0);
+            int Hx2 = XList.get(1);
+            int Hy2 = YList.get(1);
+            int Hx3 = XList.get(2);
+            int Hy3 = YList.get(2);
+            int Vx4 = XList.get(3);
+            int Vy4 = YList.get(3);
+
+
+            int x1 = Vx1;
+            int y1 = Hy2;
+            int x2 = Vx1;
+            int y2 = Hy3;
+            int x3 = Vx4;
+            int y3 = Hy2;
+            int x4 = Vx4;
+            int y4 = Hy3;
+
+
+            int IXMidpoint = Math.round((x1 + x2 + x3 + x4) / 4);
+            int IYMidpoint = Math.round((y1 + y2 + y3 + y4) / 4);
+
+            Functions.colorPixel(picture, IXMidpoint, IYMidpoint, "white");
+
+
+            //For final midpoint
+
+            int x = Math.round((IXMidpoint + OXMidpoint) / 2);
+            int y = Math.round((IYMidpoint + OYMidpoint) / 2);
+
+            Functions.colorPixel(picture, x, y, "green");
+
+            finalPoints[0] = x;
+            finalPoints[1] = y;
+
+
+            return finalPoints;
+        }
+
+    }
+
+
+
+    public static int[] secondSquare(Bitmap picture, int[] List){
+
+
+        boolean innerHasPassed = false;
+
+        int[] finalPoints = new int[2];
+
+        int lx1 = List[0];
+        int lx2 = List[1];
+        int ly1 = List[2];
+        int ly2 = List[3];
+        int ux1 = List[4];
+        int  ux2 = List[5];
+        int uy1 = List[6];
+        int  uy2 = List[7];
+        int  dx1 = List[8];
+        int  dx2 = List[9];
+        int   dy1 = List[10];
+        int   dy2 = List[11];
+        int  rx1 = List[12];
+        int  rx2 = List[13];
+        int   ry1 = List[14];
+        int  ry2 = List[15];
+
+
+
+        ArrayList<ArrayList<Integer>> OuterPoints = SquareFunctions.firstSquareOuterLines(picture, "both",lx1, lx2, ly1, ly2, ux1,ux2,uy1,uy2,dx1,dx2,dy1,dy2,rx1, rx2, ry1, ry2 );
+
+        ArrayList<Integer> listOfPoints = OuterPoints.get(0);
+        ArrayList<Integer> OXList = OuterPoints.get(1);
+        ArrayList<Integer> OYList = OuterPoints.get(2);
+
+
+        int Lx1 = listOfPoints.get(0);
+        int Lx2 = listOfPoints.get(1);
+        int Ly1 = listOfPoints.get(2);
+        int Ly2 = listOfPoints.get(3);
+        int Ux1 = listOfPoints.get(4);
+        int  Ux2 = listOfPoints.get(5);
+        int  Uy1 = listOfPoints.get(6);
+        int  Uy2 = listOfPoints.get(7);
+        int Dx1 = listOfPoints.get(8);
+        int  Dx2 = listOfPoints.get(9);
+        int  Dy1 = listOfPoints.get(10);
+        int  Dy2 = listOfPoints.get(11);
+        int  Rx1 = listOfPoints.get(12);
+        int  Rx2 = listOfPoints.get(13);
+        int Ry1 = listOfPoints.get(14);
+        int  Ry2 = listOfPoints.get(15);
+
+
+        ArrayList<Integer> XList = new ArrayList<Integer>();
+        ArrayList<Integer> YList = new ArrayList<Integer>();
+
+        try {
+            ArrayList<ArrayList<Integer>> innerListPoints = SquareFunctions.firstSquareOuterLines(picture, "midpoint", Lx1, Lx2, Ly1, Ly2 + 3, Ux1, Ux2 + 3, Uy1, Uy2, Dx1 - 3, Dx2, Dy1, Dy2, Rx1, Rx2, Ry1 - 3, Ry2);
+            XList = innerListPoints.get(0);
+            YList = innerListPoints.get(1);
+            innerHasPassed = true;
+
+        }catch (Exception e){
+            innerHasPassed = false;
+        }
+
+
+        //For the outer square
+
+        int OXMidpoint;
+        int OYMidpoint;
+
+        if (!innerHasPassed) {
+
+
+            int OVx1 = OXList.get(0);
+            int OVy1 = OYList.get(0);
+            int OHx2 = OXList.get(1);
+            int OHy2 = OYList.get(1);
+            int OHx3 = OXList.get(2);
+            int OHy3 = OYList.get(2);
+            int OVx4 = OXList.get(3);
+            int OVy4 = OYList.get(3);
+
+
+            int Ox1 = OVx1;
+            int Oy1 = OHy2;
+            int Ox2 = OVx1;
+            int Oy2 = OHy3;
+            int Ox3 = OVx4;
+            int Oy3 = OHy2;
+            int Ox4 = OVx4;
+            int Oy4 = OHy3;
+
+
+             OXMidpoint = Math.round((Ox1 + Ox2 + Ox3 + Ox4) / 4);
+             OYMidpoint = Math.round((Oy1 + Oy2 + Oy3 + Oy4) / 4);
+
+            Functions.colorPixel(picture, OXMidpoint, OYMidpoint, "white");
+
+            finalPoints[0] = OXMidpoint;
+            finalPoints[1] = OYMidpoint;
+
+            return finalPoints;
+
+        }
+
+
+        //for both the outer square and inner square coordinates
+        else {
+
+            int OVx1 = OXList.get(0);
+            int OVy1 = OYList.get(0);
+            int OHx2 = OXList.get(1);
+            int OHy2 = OYList.get(1);
+            int OHx3 = OXList.get(2);
+            int OHy3 = OYList.get(2);
+            int OVx4 = OXList.get(3);
+            int OVy4 = OYList.get(3);
+
+
+            int Ox1 = OVx1;
+            int Oy1 = OHy2;
+            int Ox2 = OVx1;
+            int Oy2 = OHy3;
+            int Ox3 = OVx4;
+            int Oy3 = OHy2;
+            int Ox4 = OVx4;
+            int Oy4 = OHy3;
+
+
+            OXMidpoint = Math.round((Ox1 + Ox2 + Ox3 + Ox4) / 4);
+            OYMidpoint = Math.round((Oy1 + Oy2 + Oy3 + Oy4) / 4);
+
+            Functions.colorPixel(picture, OXMidpoint, OYMidpoint, "white");
+
+            int Vx1 = XList.get(0);
+            int Vy1 = YList.get(0);
+            int Hx2 = XList.get(1);
+            int Hy2 = YList.get(1);
+            int Hx3 = XList.get(2);
+            int Hy3 = YList.get(2);
+            int Vx4 = XList.get(3);
+            int Vy4 = YList.get(3);
+
+
+            int x1 = Vx1;
+            int y1 = Hy2;
+            int x2 = Vx1;
+            int y2 = Hy3;
+            int x3 = Vx4;
+            int y3 = Hy2;
+            int x4 = Vx4;
+            int y4 = Hy3;
+
+
+            int IXMidpoint = Math.round((x1 + x2 + x3 + x4) / 4);
+            int IYMidpoint = Math.round((y1 + y2 + y3 + y4) / 4);
+
+            Functions.colorPixel(picture, IXMidpoint, IYMidpoint, "white");
+
+
+            //For final midpoint
+
+            int x = Math.round((IXMidpoint + OXMidpoint) / 2);
+            int y = Math.round((IYMidpoint + OYMidpoint) / 2);
+
+            Functions.colorPixel(picture, x, y, "green");
+
+            finalPoints[0] = x;
+            finalPoints[1] = y;
+
+
+            return finalPoints;
+        }
 
 
     }
@@ -833,10 +932,5 @@ public class SquareFunctions{
 
         return finalPoints;
     }
-
-
-
-
-
 
 }

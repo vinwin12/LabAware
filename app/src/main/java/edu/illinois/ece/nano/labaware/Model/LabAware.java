@@ -24,7 +24,7 @@ public class LabAware {
 
 
 
-    public void calculateChip(Bitmap picture, Bitmap greenPicture) {
+    public int[] calculateChip(Bitmap picture, Bitmap greenPicture) {
 
 
 
@@ -34,7 +34,7 @@ public class LabAware {
         ArrayList<Integer> yList = xyList.get(1);
 
         boolean bothPass = false;
-        //    boolean OnlyfirstSquare = false;
+        boolean OnlyfirstSquare = false;
         boolean OnlysecondSquare = false;
 
         int[] leftSquare = new int[2];
@@ -48,17 +48,22 @@ public class LabAware {
         } catch (Exception e) {
             try {
                 leftSquare = SquareFunctions.firstSquareOnly(picture, SquareFunctions.convertIntegers(xList));
+                OnlyfirstSquare = true;
+                bothPass = false;
             } catch (Exception v) {
+
+
                 rightSquare = SquareFunctions.secondSquareOnly(picture, SquareFunctions.convertIntegers(yList));
                 OnlysecondSquare = true;
                 bothPass = false;
+
             }
 
         }
 
 
 
-        if(bothPass){
+        if(bothPass || OnlyfirstSquare){
             calculateGreenChip(greenPicture,leftSquare[0],leftSquare[1],true);
         }
 
@@ -67,23 +72,22 @@ public class LabAware {
         }
 
 
+        int[] values = new int[10];
 
+        values[0] = green1;
+        values[1] = green2;
+        values[2] = green3;
+        values[3] = green4;
+        values[4] = green5;
+        values[5] = green6;
+        values[6] = green7;
+        values[7] = green8;
+        values[8] = green9;
+        values[9] = green10;
+
+        return values;
     }
 
-/*
-        list.add(0,leftSquare[0]);
-        list.add(1,leftSquare[1]);
-        list.add(2,rightSquare[0]);
-        list.add(3,rightSquare[1]);
-
-
-       return list; */
-
-
-            // findGreenValue(leftSquare[0], leftSquare[1]);
-
-
-            //  findGreenValue(firstOuterPoint,secondOuterPoint,greenPicture);
 
     public ArrayList<ArrayList<Integer>> getRanges (Bitmap picture){
 
@@ -214,12 +218,21 @@ public class LabAware {
 
     public void calculateGreenChip(Bitmap picture, int x, int y, boolean isFirst) {
 
+        picture.setPixel(y,x,Color.YELLOW);
+        picture.setPixel(y+1,x,Color.YELLOW);
+        picture.setPixel(y+2,x,Color.YELLOW);
+        picture.setPixel(y+3,x,Color.YELLOW);
+        picture.setPixel(y+4,x,Color.YELLOW);
+
+
         if(isFirst) {
             findGreenValue(x, y, picture, isFirst);
         }
         else{
             findGreenValueSecondSquare(x,y,picture,isFirst);
         }
+
+
 
     }
 
@@ -412,6 +425,8 @@ public class LabAware {
 
                 green.add(greenValue);
 
+                //picture.setPixel(i,j,Color.YELLOW);
+
 
             }
 
@@ -419,7 +434,33 @@ public class LabAware {
         }
 
 
-        Functions.colorRectangle(picture, a.xposition - 200, a.yposition - 5 - offset, a.xposition, a.yposition + 5 - offset);
+        for (int j : Functions.range(a.xposition,a.xposition - 201,true)){
+
+            int i = a.yposition - 6 - offset;
+                picture.setPixel(i,j,Color.WHITE);
+
+
+            int k = a.yposition + 6 - offset;
+                picture.setPixel(k,j,Color.WHITE);
+
+        }
+
+
+        for (int i : Functions.range(a.yposition - 6 -offset, a.yposition + 6 - offset,false)){
+
+            int j = a.xposition - 201;
+
+                picture.setPixel(i,j,Color.WHITE);
+
+            int k = a.xposition;
+
+                picture.setPixel(i, k, Color.WHITE);
+
+
+
+        }
+
+
 
         int TotalSum = 0;
         for (int i = 0; i < green.size(); i++) {
@@ -431,6 +472,9 @@ public class LabAware {
 
         return value;
     }
+
+
+
 
 
 }
